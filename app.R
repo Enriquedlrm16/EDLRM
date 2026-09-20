@@ -1756,7 +1756,7 @@ server <- function(input, output, session) {
             return("Click 'Run Neural Network' to make predictions.")
         } else {
             # Make predictions using the loaded model
-            prediction <- predict(model_NN, mtx)
+            prediction <- model_NN$predict(mtx)
             prediction_result <- c()
             # browser()
             for (i in seq(1:nrow(prediction))) {
