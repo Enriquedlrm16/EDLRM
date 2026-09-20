@@ -1423,7 +1423,9 @@ ui <- navbarPage(theme = light, checkboxInput("dark_mode", "Dark mode"), collaps
                                                               helper(
                                                                   type = "inline", size = "m", fade = TRUE,
                                                                   title = "Example data",
-                                                                  content = "A small CSV with 2 anonymized bulk expression profiles from the training cohort (77-gene panel), so you can try the full workflow before uploading your own data."),
+                                                                  content = "A raw bulk RNA-seq expression matrix for 6 real patients from an independent, publicly available external
+                                                                             validation cohort (GEO accession GSE159426, PAD regimen), used in the associated study. Upload it here to
+                                                                             try the full preprocessing workflow before using your own data."),
                                                           br(), br(),
                                                           fileInput("RNA_seq", label = "Input an Expression Raw Matrix from RNA-seq (csv)",
                                                                     accept = c('text/csv', 'text/comma-separated-values', 'text/plain', '.csv')
@@ -1452,7 +1454,8 @@ ui <- navbarPage(theme = light, checkboxInput("dark_mode", "Dark mode"), collaps
                                                               helper(
                                                                   type = "inline", size = "m", fade = TRUE,
                                                                   title = "Example data",
-                                                                  content = "A small CSV with 2 anonymized single-cell-derived expression profiles from the training cohort (77-gene panel), so you can try the full workflow before uploading your own data."),
+                                                                  content = "The same 6-patient expression matrix as in the RNA-seq Data tab (GEO accession GSE159426), usable here to
+                                                                             try the single-cell-style preprocessing workflow before using your own data."),
                                                           br(), br(),
                                                           fileInput("Single_cell", label = "Input an Expression Raw Matrix from Single-cell RNA-seq (csv)",
                                                                     accept = c('text/csv', 'text/comma-separated-values', 'text/plain', '.csv')),
@@ -1473,6 +1476,15 @@ ui <- navbarPage(theme = light, checkboxInput("dark_mode", "Dark mode"), collaps
                                                               "Uploaded files are processed in memory for this session only, to generate a prediction. ",
                                                               "They are not stored, logged, or shared with third parties. Please do not upload data containing direct patient identifiers."
                                                           ),
+                                                          downloadButton("downloadExampleData_prediction", "Download example data (known-outcome patients)") %>%
+                                                              helper(
+                                                                  type = "inline", size = "m", fade = TRUE,
+                                                                  title = "Example data",
+                                                                  content = "Already-preprocessed data (skip the two tabs on the left) for 2 real patients from the external
+                                                                             validation cohort GSE159426, with known clinical outcome: MM104 (optimal responder) and MM116
+                                                                             (suboptimal responder). Upload this file and click 'Run Neural Network' to see whether the
+                                                                             predictions match these known labels."),
+                                                          br(), br(),
                                                           fileInput("patient_data_expression", label = "Input the previous Downloaded Data for Neural Network Prediction",
                                                                     accept = c('text/csv', 'text/comma-separated-values', 'text/plain', '.csv')),
                                                           actionButton("runNetwork", "Run Neural Network") %>%
@@ -1795,22 +1807,33 @@ server <- function(input, output, session) {
     )
 
     # Example data, so first-time users can try the full workflow before uploading their own files.
-    # Two anonymized expression profiles (77-gene panel) from the published training cohort (GSE189460).
+    # Real, public, external-validation-cohort data (GSE159426, 6 patients, PAD regimen).
     output$downloadExampleData_bulk <- downloadHandler(
         filename = function() {
-            "example_expression_matrix.csv"
+            "example_raw_expression_matrix_GSE159426.csv"
         },
         content = function(file) {
-            file.copy("www/example_expression_matrix.csv", file)
+            file.copy("www/example_raw_expression_matrix.csv", file)
         }
     )
 
     output$downloadExampleData_sc <- downloadHandler(
         filename = function() {
-            "example_expression_matrix.csv"
+            "example_raw_expression_matrix_GSE159426.csv"
         },
         content = function(file) {
-            file.copy("www/example_expression_matrix.csv", file)
+            file.copy("www/example_raw_expression_matrix.csv", file)
+        }
+    )
+
+    # Already-preprocessed example (2 patients, known clinical outcome) for the
+    # Neural Network Prediction tab, so users can validate predictions directly.
+    output$downloadExampleData_prediction <- downloadHandler(
+        filename = function() {
+            "example_prediction_ready_MM104optimal_MM116suboptimal.csv"
+        },
+        content = function(file) {
+            file.copy("www/example_prediction_ready.csv", file)
         }
     )
     
