@@ -666,7 +666,7 @@ scBubbHeat <- function(inpConf, inpMeta, inp, inpGrp, inpPlt,
 model_NN <- keras::load_model_hdf5("my_model_MM_prueba_2_all.h5")
 
 # Define the UI
-ui <- navbarPage(theme = light, checkboxInput("dark_mode", "Dark mode"), collapsable = FALSE, title = "Multiple Myeloma App",position = "static-top",
+ui <- navbarPage(theme = light, checkboxInput("dark_mode", "Dark mode"), title = "Multiple Myeloma App",position = "static-top",
                 tabsetPanel(
                             tabPanel(HTML("Single-cell RNA-seq Workflow"),
                                      mainPanel( uiOutput("pdfview"))
