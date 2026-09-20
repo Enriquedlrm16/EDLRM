@@ -1,0 +1,20 @@
+# R
+.Rhistory
+.RData
+.Rproj.user/
+.Rprofile
+
+# macOS
+.DS_Store
+
+# Large reference dataset — NOT tracked in git (see README > Large reference dataset).
+# Place a local copy here to run the interactive explorer tab locally.
+sc1gexpr.h5
+
+# Docker build artefacts
+*.tar
+*.tar.gz
+*.tar.xz
+
+# shinyapps.io deployment metadata
+rsconnect/
