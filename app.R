@@ -1413,6 +1413,18 @@ ui <- navbarPage(theme = light, checkboxInput("dark_mode", "Dark mode"), collaps
                                                               alt = "Something went wrong",
                                                               style = "margin-top: 20px; margin-bottom: 20px;"
                                                           ),
+                                                          tags$div(
+                                                              style = "background-color:#f5f5f5; border-left: 3px solid #2a78d6; padding: 8px 12px; margin-bottom: 12px; font-size: 12px; color: #333;",
+                                                              tags$strong("Data privacy: "),
+                                                              "Uploaded files are processed in memory for this session only, to generate a prediction. ",
+                                                              "They are not stored, logged, or shared with third parties. Please do not upload data containing direct patient identifiers."
+                                                          ),
+                                                          downloadButton("downloadExampleData_bulk", "Download example data") %>%
+                                                              helper(
+                                                                  type = "inline", size = "m", fade = TRUE,
+                                                                  title = "Example data",
+                                                                  content = "A small CSV with 2 anonymized bulk expression profiles from the training cohort (77-gene panel), so you can try the full workflow before uploading your own data."),
+                                                          br(), br(),
                                                           fileInput("RNA_seq", label = "Input an Expression Raw Matrix from RNA-seq (csv)",
                                                                     accept = c('text/csv', 'text/comma-separated-values', 'text/plain', '.csv')
                                                                     ),
@@ -1430,6 +1442,18 @@ ui <- navbarPage(theme = light, checkboxInput("dark_mode", "Dark mode"), collaps
                                                               alt = "Something went wrong",
                                                               style = "margin-top: 20px; margin-bottom: 20px;"
                                                           ),
+                                                          tags$div(
+                                                              style = "background-color:#f5f5f5; border-left: 3px solid #2a78d6; padding: 8px 12px; margin-bottom: 12px; font-size: 12px; color: #333;",
+                                                              tags$strong("Data privacy: "),
+                                                              "Uploaded files are processed in memory for this session only, to generate a prediction. ",
+                                                              "They are not stored, logged, or shared with third parties. Please do not upload data containing direct patient identifiers."
+                                                          ),
+                                                          downloadButton("downloadExampleData_sc", "Download example data") %>%
+                                                              helper(
+                                                                  type = "inline", size = "m", fade = TRUE,
+                                                                  title = "Example data",
+                                                                  content = "A small CSV with 2 anonymized single-cell-derived expression profiles from the training cohort (77-gene panel), so you can try the full workflow before uploading your own data."),
+                                                          br(), br(),
                                                           fileInput("Single_cell", label = "Input an Expression Raw Matrix from Single-cell RNA-seq (csv)",
                                                                     accept = c('text/csv', 'text/comma-separated-values', 'text/plain', '.csv')),
                                                           actionButton("showData_raw_sc", "Show Head of processed scRNA-seq Data Uploaded") %>%
@@ -1443,6 +1467,12 @@ ui <- navbarPage(theme = light, checkboxInput("dark_mode", "Dark mode"), collaps
                                                  ),
                                                  tabPanel("Neural Network Prediction",
                                                           # Content for Neural Network Prediction tab
+                                                          tags$div(
+                                                              style = "background-color:#f5f5f5; border-left: 3px solid #2a78d6; padding: 8px 12px; margin-bottom: 12px; font-size: 12px; color: #333;",
+                                                              tags$strong("Data privacy: "),
+                                                              "Uploaded files are processed in memory for this session only, to generate a prediction. ",
+                                                              "They are not stored, logged, or shared with third parties. Please do not upload data containing direct patient identifiers."
+                                                          ),
                                                           fileInput("patient_data_expression", label = "Input the previous Downloaded Data for Neural Network Prediction",
                                                                     accept = c('text/csv', 'text/comma-separated-values', 'text/plain', '.csv')),
                                                           actionButton("runNetwork", "Run Neural Network") %>%
@@ -1470,10 +1500,14 @@ ui <- navbarPage(theme = light, checkboxInput("dark_mode", "Dark mode"), collaps
                                                  verbatimTextOutput(outputId = "prediction") %>%
                                                  helper(
                                                      type = "inline", size = "m", fade = TRUE,
-                                                     title = "Information about Neural Network Output",
-                                                     content = "We assign a probability of belonging to one group (optimal response) or another (suboptimal response).
-                                                                If the probability of assignment in any of them is less than 70%, we will classify the response to 
-                                                                treatment as Undetermined."),
+                                                     title = "How to interpret your result",
+                                                     content = "For each sample, the network outputs a probability of belonging to the OPTIMAL-response group and a
+                                                                probability of belonging to the SUBOPTIMAL-response group (the two always sum to 100%).
+                                                                The predicted label is whichever group has the higher probability, unless that probability is
+                                                                below 70%, in which case the sample is reported as UNDETERMINED rather than forcing a low-confidence call.
+                                                                OPTIMAL indicates the model expects a favourable response to first-line bortezomib-based therapy
+                                                                (VMP / VTD / PAD); SUBOPTIMAL indicates an expected poor response. This is a research-use prediction
+                                                                tool, not a diagnostic device, and should not be used alone to guide clinical decisions."),
                                                  style = "max-width: 100%;"
                                                  ),
                                              div(
@@ -1499,8 +1533,10 @@ ui <- navbarPage(theme = light, checkboxInput("dark_mode", "Dark mode"), collaps
                 # Static footer
                 tags$div(
                     style = "background-color: #f5f5f5; padding: 10px; text-align: center; position: fixed; bottom: 0; left: 0; right: 0; min-height: 2.5rem; width: 100%;",
-                    HTML(paste("<strong>Enrique de la Rosa Morón, Bioinformatics & Functional Genomics</strong>", "<br><span style='font-size: 10px; padding-top: 5px;'>Ouyang et 
-                               al. ShinyCell: Simple and sharable visualisation of single-cell gene expression data. Bioinformatics, doi:10.1093/bioinformatics/btab209</span>"))
+                    HTML(paste("<strong>Enrique de la Rosa Morón, Bioinformatics & Functional Genomics</strong>", "<br><span style='font-size: 10px; padding-top: 5px;'>Ouyang et
+                               al. ShinyCell: Simple and sharable visualisation of single-cell gene expression data. Bioinformatics, doi:10.1093/bioinformatics/btab209</span>",
+                               "<br><span style='font-size: 10px; color:#666;'>This application uses only strictly necessary session cookies required for it to function
+                               (no third-party tracking or analytics cookies are set).</span>"))
                 )
 )
 
@@ -1755,6 +1791,26 @@ server <- function(input, output, session) {
         content = function(file) {
             data_raw_seurat <- data_matrix_raw_sc()
             write.csv(as.matrix(t(data_raw_seurat@assays$RNA@scale.data[, 19:ncol(data_raw_seurat)])), file, row.names = TRUE)
+        }
+    )
+
+    # Example data, so first-time users can try the full workflow before uploading their own files.
+    # Two anonymized expression profiles (77-gene panel) from the published training cohort (GSE189460).
+    output$downloadExampleData_bulk <- downloadHandler(
+        filename = function() {
+            "example_expression_matrix.csv"
+        },
+        content = function(file) {
+            file.copy("www/example_expression_matrix.csv", file)
+        }
+    )
+
+    output$downloadExampleData_sc <- downloadHandler(
+        filename = function() {
+            "example_expression_matrix.csv"
+        },
+        content = function(file) {
+            file.copy("www/example_expression_matrix.csv", file)
         }
     )
     
