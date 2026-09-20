@@ -1670,9 +1670,9 @@ server <- function(input, output, session) {
         data_raw <- data_matrix_raw()
 
         if(ncol(data_raw[,19:ncol(data_raw)]) < 4){
-            head(as.matrix(data_raw@assays$RNA@scale.data[, 19:ncol(data_raw)]))
+            head(as.matrix(GetAssayData(data_raw, assay = "RNA", layer = "scale.data")[, 19:ncol(data_raw)]))
         } else {
-            head(as.matrix(data_raw@assays$RNA@scale.data[, 19:21]))
+            head(as.matrix(GetAssayData(data_raw, assay = "RNA", layer = "scale.data")[, 19:21]))
         }
     })
     
@@ -1712,7 +1712,7 @@ server <- function(input, output, session) {
         req(input$Single_cell, input$showData_raw_sc > 0)
         data_raw_sc <- data_matrix_raw_sc()
         
-        head(as.matrix(data_raw_sc@assays$RNA@scale.data[1:5, 19]))
+        head(as.matrix(GetAssayData(data_raw_sc, assay = "RNA", layer = "scale.data")[1:5, 19]))
     })
     
     data_matrix <- reactive({
@@ -1792,7 +1792,7 @@ server <- function(input, output, session) {
         },
         content = function(file) {
             data_raw_seurat <- data_matrix_raw()
-            write.csv(as.matrix(t(data_raw_seurat@assays$RNA@scale.data[, 19:ncol(data_raw_seurat)])), file, row.names = TRUE)
+            write.csv(as.matrix(t(GetAssayData(data_raw_seurat, assay = "RNA", layer = "scale.data")[, 19:ncol(data_raw_seurat)])), file, row.names = TRUE)
         }
     )
     
@@ -1802,7 +1802,7 @@ server <- function(input, output, session) {
         },
         content = function(file) {
             data_raw_seurat <- data_matrix_raw_sc()
-            write.csv(as.matrix(t(data_raw_seurat@assays$RNA@scale.data[, 19:ncol(data_raw_seurat)])), file, row.names = TRUE)
+            write.csv(as.matrix(t(GetAssayData(data_raw_seurat, assay = "RNA", layer = "scale.data")[, 19:ncol(data_raw_seurat)])), file, row.names = TRUE)
         }
     )
 
