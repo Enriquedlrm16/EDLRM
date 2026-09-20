@@ -10,10 +10,10 @@ Multiple Myeloma, from single-cell and bulk transcriptomic data.**
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![R](https://img.shields.io/badge/R-%E2%89%A54.0-276DC3?logo=r&logoColor=white)](https://www.r-project.org/)
 [![Shiny](https://img.shields.io/badge/built%20with-Shiny-0b6dab?logo=rstudio&logoColor=white)](https://shiny.posit.co/)
-[![Live demo](https://img.shields.io/badge/demo-online-2ea043)](https://enriquedlrm98.shinyapps.io/mm_neural_network/)
+[![Live demo](https://img.shields.io/badge/demo-online-2ea043)](https://enriquedlrm98.shinyapps.io/EDLRM/)
 [![Status](https://img.shields.io/badge/status-manuscript%20in%20preparation-eda100)](#citation)
 
-[**🔗 Live demo**](https://enriquedlrm98.shinyapps.io/mm_neural_network/) ·
+[**🔗 Live demo**](https://enriquedlrm98.shinyapps.io/EDLRM/) ·
 [Features](#features) ·
 [Getting started](#getting-started) ·
 [Data](#data) ·
@@ -87,7 +87,7 @@ implementation.
 
 ### 🌐 Just use it — no install needed
 
-**[→ enriquedlrm98.shinyapps.io/mm_neural_network](https://enriquedlrm98.shinyapps.io/mm_neural_network/)**
+**[→ enriquedlrm98.shinyapps.io/EDLRM](https://enriquedlrm98.shinyapps.io/EDLRM/)**
 
 ### 💻 Run it locally
 
@@ -140,7 +140,7 @@ matrix from `sc1gexpr.h5` (~1.2 GB), generated with
 [ShinyCell](https://github.com/SGDDNB/ShinyCell). This file is **intentionally not
 tracked in this repository** (GitHub is not an appropriate host for a file this size).
 
-- To just **use the app**, the [live demo](https://enriquedlrm98.shinyapps.io/mm_neural_network/)
+- To just **use the app**, the [live demo](https://enriquedlrm98.shinyapps.io/EDLRM/)
   already includes it — no download needed.
 - To **run the explorer tab locally**, a persistent, versioned copy will be deposited
   in a data repository (Zenodo/GigaDB) with its own DOI — *link to be added here once
